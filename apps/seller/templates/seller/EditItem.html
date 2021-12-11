@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Edit Items | {% endblock %}
+
+{% block content %}
+    <h1 class = "title">Edit Items</h1>
+
+    <form method = "post" action = "." enctype="multipart/form-data">
+        {% csrf_token %} 
+        
+        <!--https://docs.djangoproject.com/en/4.0/topics/forms/-->
+        {{ form.as_p }} <!--django function to wrapp all the item information and data specifc into
+            django format to take user input from standard model -->
+
+        <div class = "field">
+            <div class = "control"><br>
+                <button class = "button is-link is-uppercase">Save</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}

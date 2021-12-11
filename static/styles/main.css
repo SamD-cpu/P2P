@@ -1,0 +1,90 @@
+/**
+* Navagation
+*/
+
+.navbar {
+    text-transform: uppercase;
+}
+    .navbar .is-dark {
+            background: #444;
+    }
+
+/**
+* Footer
+**/
+
+.footer a {
+
+    margin-bottom: 15px;
+    display: inline-block;
+    color: #444;
+}
+
+/**
+* Override for Bulma functions
+**/
+
+.input, .button {
+    border-radius: 0;
+}
+
+/**
+* Item list
+**/
+
+.item-list-item .box .subtitle {
+    margin-bottom: 0;
+}
+
+.item-list-item .box .price {
+    color: #888;
+}
+
+.right_align {
+    text-align: right;
+}
+
+.left_alignment {
+    text-align: left;
+}
+  
+.holdingcontainer{
+    width:  100%;
+    display:  flex;
+    padding: 50px;
+    box-sizing:  border-box;
+}
+
+.internalcontainerL{
+    flex: 2;
+    margin-right: 150px;
+}
+
+.internalcontainerR{
+    flex: 1;
+    margin-right: 150px;
+
+}
+
+@media screen and (max-width: 768px) {
+    .holdingcontainer{
+        flex-direction: column;
+    }
+}
+
+
+@keyframes  show-toast{
+    0%      {bottom:  -100%;}
+    20%     {bottom:  50px;}
+    80%     {bottom:  50px;}
+    100%    {bottom:  -100%;}
+}
+
+.notification .is-toast{
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-duration: 3s;
+    animation-name: show-toast;
+  }
+

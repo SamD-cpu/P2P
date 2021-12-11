@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Seller Admin | {% endblock %}
+
+{% block content %}
+    <div class = "box">    
+        <h1 class = "title">Seller Dashboard - {{seller.name}} </h1>
+
+    </div>
+
+    <div class ="right_align">
+        <a href="{% url 'Edit' %}" class = "button is-size-10 is-warning is-rounded is-uppercase"> Edit Profile</a><!--edit profile information fro email and name of user(unique)-->
+
+        <a href="{% url 'Logout' %}" class = "button is-size-10 is-danger is-rounded is-uppercase"> Log Out</a><!--allows to logout for user-->
+    </div>
+    <strong>Balance: </strong>${{ seller.getBalance }}<br>
+    <strong>Paid Amount: </strong>${{ seller.getPaidCost }}
+
+
+    <div class = "box">
+        <h2 class = "is-size-3 mb-4">My Items</h2>
+
+        <a href="{% url 'AddItem' %}" class = "button is-success is-rounded is-uppercase mb-6"> Add Item </a>
+
+        {% if items %}
+            <table class = "table is-fullwidth"><!--table to list the items-->
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in items %}
+                        <tr>
+                            <td><a href="{% url 'item' item.category.slug item.slug %}">{{ item.title }}</a></td>
+                            <td> ${{ item.price }} </td>
+                            <td><a href="{% url 'EditItem' item.id %}" class = "button is-info is-rounded is-uppercase mb-3">Edit</a></td>
+                        </tr>
+                    {%endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p> No Items Found</p>
+        {% endif %}
+    </div>
+    
+    
+    <br>
+
+<div class="box">
+    <h2 class="is-size-3 mb-4">Orders</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                <div class="columns is-multiline">
+                    <div class="column is-6">
+                        <h3 class="is-size-4">#{{ order.id }} - {{ order.firstName }} {{ order.lastName }}</h3>
+                    </div>
+
+                    <div class="column is-12">
+                        <b>Name:</b> {{ order.firstName }} {{ order.lastName }}<br>
+                        <b>Address:</b> {{ order.address }}<br>
+                        <b>Zip and Area:</b> {{ order.zipcode }} {{ order.area }}<br>
+                        <b>E-mail:</b> {{ order.email }}<br>
+                        <b>Phone:</b> {{ order.pNumber }}
+
+                        <table class="table is-fullwidth mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Paid For</th>
+                                    <th></th>
+
+
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.item.all %}
+                                    {% if item.seller == request.user.seller %}
+                                        <tr>
+                                            <td>{{ item.item.title }}</td>
+                                            <td>${{ item.item.price }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>{{ item.sellerCheck|yesno:"Yes,No" }}</td>
+                                            <th></th>
+
+                                        </tr>
+                                    {% endif %}
+                                    <th>Total: ${{ item.get_total_cost }}</th>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

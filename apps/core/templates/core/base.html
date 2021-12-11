@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name = "viewport" content = "width = device-width, initial-scale = 1">
+
+        <title>{% block title %}{% endblock %} Bernard </title>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"> <!--style sheet for bulma-->
+        <link rel="stylesheet" href="{% static 'styles/main.css' %}"> <!--style sheet for overiding style functions in css-->
+
+        <script src = "{% static 'scripts/main.js' %}"></script> <!--scripts in static files-->
+    </head>
+<!-- this section is for the frontpage and navagation bar-->
+    <body>
+        <nav class = "navbar"> 
+            <div style="color:blue">
+                <div class = "navbar-brand">
+                    <a href = "/" class = "navbar-item" style="color:rgb(145, 158, 255); font-size:30px; font-family:'Courier New'"><strong>Bernard</strong></a>
+                    
+                    <!-- this section is for the mobile users burger drop menu-->
+
+                    <a role = "button" class = "navbar-burger" aria-label = "menu" aria-expanded="false" data-target = "main-navbar"><!--nav bar style-->
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+            </div>
+<!-- Nav bar-->
+            <div class = "navbar-menu" id = "main-navbar">
+                <div class="navbar-start">
+                    <div class="navbar-item">
+                        <form method="get" action="{% url 'search' %}"><!-- link to search function-->
+                            <div class="field has-addons">
+                                <div class="control"><!--search input bar-->
+                                    <input type="text" size = "30" class="input" placeholder="Search for items, brands, and/or pets..." name="query">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-info is-rounded is-outlined" >Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class = "navbar-end">
+                    {% for category in m_categories %} <!--list categories created by admin-->
+                        <a href="{% url 'category' category.slug %}" class = "navbar-item">{{category.title}}</a>
+                    {% endfor %}
+
+                <div class="navbar-item">
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'SellerAdmin' %}" class="button is-rounded is-info">Dashboard</a><!--directs to seller dashboard-->
+                    {%else %}
+                    <a href="{% url 'SignupSeller' %}" class="button is-rounded is-info">SIGN UP</a>
+                    <a href="{% url 'Login' %}" class="button is-rounded is-info " style="margin-left: 0.5em;">LOGIN</a>
+                    {%endif %}
+                </div>
+
+                    <div class="navbar-item">
+                        <a href = "{% url 'cart' %}" class= "button is-rounded is-link">Cart{% if cart %} ({{cart|length}}) {% endif %}</a><!--if items in cart update 
+                            with html length-->
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <section class="section">
+            <div class="container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </section>
+        
+        <footer class = "footer">
+            <h3 class = "is-size-4 mb-4">Bernard Market</h3>
+            
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'SellerAdmin' %}" >&emsp; Seller Admin</a>
+            {%else %}
+            <a href="{% url 'SignupSeller' %}">&emsp; Become a Seller</a>
+            {%endif %}
+
+            <a href="{% url 'sellers' %}">&emsp; Seller Spotlight</a>
+
+            <a href = "{% url 'about' %}">&emsp; About</a>
+
+            <a href = "{% url 'contact' %}">&emsp; Payment</a>
+
+
+
+
+        </footer>
+        {%block scripts %}
+        {% endblock %}
+    </body>
+</html>

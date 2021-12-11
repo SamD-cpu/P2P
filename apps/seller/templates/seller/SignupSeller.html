@@ -1,0 +1,27 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Signup Seller | {% endblock %}
+
+{% block content %}
+    <h1 class = "title">Seller Sign Up Page</h1>
+
+    <form method = "post" action = ".">
+        {% csrf_token %} 
+
+        {{ form.as_p }}
+
+        <div class = "field">
+            <div class = "control">
+                <button class = "button is-dark is-uppercase">Sign Up</button>
+            </div>
+        </div>
+
+    </form>
+
+    <hr>
+
+
+    <h2 class = "subtitle">Already have an account?</h2>
+
+    <a href = "{% url 'Login' %}" class = "button is-size-10 is-link is-uppercase">Log in</a>
+{% endblock %}
